@@ -1,0 +1,6 @@
+apiVersion: operator.catalysts.cc/v1alpha1
+kind: LeoCertificate
+metadata:
+  name: default
+spec:
+  domain: apps.openshift-sandbox.catalysts.digital

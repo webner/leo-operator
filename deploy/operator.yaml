@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: leo-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: leo-operator
+  template:
+    metadata:
+      labels:
+        name: leo-operator
+    spec:
+      serviceAccountName: leo-operator
+      containers:
+        - name: leo-operator
+          image: image-registry.openshift-image-registry.svc:5000/catalysts-operators/leo-operator
+          command:
+          - leo-operator
+          imagePullPolicy: Always
+          env:
+            - name: WATCH_NAMESPACE
+              value: ''
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "leo-operator"

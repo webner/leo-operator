@@ -1,0 +1,11 @@
+apiVersion: operator.catalysts.cc/v1alpha1
+kind: LeoConfig
+metadata:
+  name: default
+spec:
+  production: true
+  account:
+    email: wolfgang.ebner@catalysts.cc
+  provider:
+    acmeDNS:
+      url: https://acme-dns.catalysts.cc
