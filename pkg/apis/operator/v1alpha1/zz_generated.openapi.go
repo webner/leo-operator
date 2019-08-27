@@ -68,7 +68,16 @@ func schema_pkg_apis_operator_v1alpha1_LeoCertificateSpec(ref common.ReferenceCa
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
 				Description: "LeoCertificateSpec defines the desired state of LeoCertificate",
-				Properties:  map[string]spec.Schema{},
+				Properties: map[string]spec.Schema{
+					"domain": {
+						SchemaProps: spec.SchemaProps{
+							Description: "domain name",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+				},
+				Required: []string{"domain"},
 			},
 		},
 		Dependencies: []string{},
@@ -80,7 +89,16 @@ func schema_pkg_apis_operator_v1alpha1_LeoCertificateStatus(ref common.Reference
 		Schema: spec.Schema{
 			SchemaProps: spec.SchemaProps{
 				Description: "LeoCertificateStatus defines the observed state of LeoCertificate",
-				Properties:  map[string]spec.Schema{},
+				Properties: map[string]spec.Schema{
+					"message": {
+						SchemaProps: spec.SchemaProps{
+							Description: "messages from the operator",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+				},
+				Required: []string{"message"},
 			},
 		},
 		Dependencies: []string{},

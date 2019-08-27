@@ -246,6 +246,31 @@ func (r *ReconcileLeoCertificate) Reconcile(request reconcile.Request) (reconcil
 		return reconcile.Result{}, err
 	}
 
+	// Check if credentials were previously saved for this domain.
+	acmeDNSAccount, err := storage.Fetch(instance.Spec.Domain)
+	// Errors other than goacmeDNS.ErrDomainNotFound are unexpected.
+	if err != nil && err != goacmedns.ErrDomainNotFound {
+		return reconcile.Result{}, err
+	}
+
+	if err == goacmedns.ErrDomainNotFound {
+		acmeDNSAccount, err = dnsClient.RegisterAccount(nil)
+		if err != nil {
+			return reconcile.Result{}, err
+		}
+
+		// Store the new account in the storage and call save to persist the data.
+		err = storage.Put(instance.Spec.Domain, acmeDNSAccount)
+		if err != nil {
+			return reconcile.Result{}, err
+		}
+		fqdn := "_acme-challenge." + instance.Spec.Domain
+		instance.Status.Message = "waiting for: " + fqdn + " CNAME " + acmeDNSAccount.FullDomain + "."
+		r.client.Status().Update(context.TODO(), instance)
+
+		return reconcile.Result{RequeueAfter: time.Minute * 3}, nil
+	}
+
 	// Check certificates
 	certificateName := "acme-certificate-" + instance.Spec.Domain
 
@@ -284,6 +309,10 @@ func (r *ReconcileLeoCertificate) Reconcile(request reconcile.Request) (reconcil
 		if err != nil {
 			return reconcile.Result{}, err
 		}
+
+		instance.Status.Message = time.Now().Local().String() + " Certificate successfully created."
+		r.client.Status().Update(context.TODO(), instance)
+
 	} else if err == nil {
 
 		reqLogger.Info("renew certificate")
@@ -313,6 +342,9 @@ func (r *ReconcileLeoCertificate) Reconcile(request reconcile.Request) (reconcil
 			if err != nil {
 				return reconcile.Result{}, err
 			}
+			instance.Status.Message = time.Now().Local().String() + " Certificate successfully renewed."
+			r.client.Status().Update(context.TODO(), instance)
+
 		} else {
 			reqLogger.Info(fmt.Sprintf("Skipping renew, certificate is still valid for %d hours", int(timeLeft.Hours())))
 		}

@@ -3,6 +3,10 @@ kind: CustomResourceDefinition
 metadata:
   name: leocertificates.operator.catalysts.cc
 spec:
+  additionalPrinterColumns:
+  - JSONPath: .status.message
+    name: Message
+    type: string
   group: operator.catalysts.cc
   names:
     kind: LeoCertificate
@@ -28,8 +32,20 @@ spec:
         metadata:
           type: object
         spec:
+          properties:
+            domain:
+              description: domain name
+              type: string
+          required:
+          - domain
           type: object
         status:
+          properties:
+            message:
+              description: messages from the operator
+              type: string
+          required:
+          - message
           type: object
   version: v1alpha1
   versions:

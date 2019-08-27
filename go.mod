@@ -6,7 +6,7 @@ require (
 	github.com/cpu/goacmedns v0.0.1
 	github.com/go-acme/lego v2.7.1+incompatible
 	github.com/go-logr/logr v0.1.0
-	github.com/miekg/dns v1.1.15 // indirect
+	github.com/miekg/dns v1.1.15
 	github.com/operator-framework/operator-sdk v0.9.1-0.20190724001845-d6e1aba9fa51
 	github.com/spf13/pflag v1.0.3
 	k8s.io/api v0.0.0-20190612125737-db0771252981
@@ -14,7 +14,7 @@ require (
 	k8s.io/client-go v11.0.0+incompatible
 	k8s.io/kube-openapi v0.0.0-20190603182131-db7b694dc208 // indirect
 	sigs.k8s.io/controller-runtime v0.1.12
-	sigs.k8s.io/controller-tools v0.1.10
+	sigs.k8s.io/controller-tools v0.1.10 // indirect
 )
 
 // Pinned to kubernetes-1.13.4

@@ -9,15 +9,19 @@ import (
 type LeoCertificateSpec struct {
 	// Important: Run "operator-sdk generate k8s" to regenerate code after modifying this file
 	// Add custom validation using kubebuilder tags: https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html
+
+	// domain name
 	Domain string `json:"domain"`
 }
 
 // LeoCertificateStatus defines the observed state of LeoCertificate
 // +k8s:openapi-gen=true
 type LeoCertificateStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "operator-sdk generate k8s" to regenerate code after modifying this file
 	// Add custom validation using kubebuilder tags: https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html
+
+	// messages from the operator
+	Message string `json:"message"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -25,6 +29,7 @@ type LeoCertificateStatus struct {
 // LeoCertificate is the Schema for the leocertificates API
 // +k8s:openapi-gen=true
 // +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Message",type="string",JSONPath=".status.message"
 type LeoCertificate struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
