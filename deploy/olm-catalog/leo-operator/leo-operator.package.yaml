@@ -1,0 +1,5 @@
+channels:
+- currentCSV: leo-operator.v0.0.1
+  name: alpha
+defaultChannel: alpha
+packageName: leo-operator
